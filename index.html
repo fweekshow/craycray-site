@@ -147,22 +147,24 @@
             }
 
             async init() {
-                // Set up the app
-                this.setupEventListeners();
-                this.checkOnboarding();
-                
-                // Wait for SDK to be available, then call ready() once when app is ready to display
+                // Call ready() FIRST - this is critical for Base mini-apps
                 try {
                     // Ensure SDK is imported and available
                     if (typeof sdk === 'undefined' || !sdk || !sdk.actions) {
                         throw new Error('SDK not available');
                     }
                     
-                    // Call ready() only once when app is ready to display
+                    // Call ready() immediately when SDK is available - this is the key difference
                     await sdk.actions.ready();
+                    
+                    // THEN set up the app and connect
+                    this.setupEventListeners();
+                    this.checkOnboarding();
                     await this.initializeBaseConnection();
                 } catch (error) {
                     console.log('SDK initialization failed, using development mode');
+                    this.setupEventListeners();
+                    this.checkOnboarding();
                     this.setupDevMode();
                     this.updateConnectionStatus(false, 'Development Mode');
                 }
@@ -667,8 +669,10 @@
             }
         }
 
-        // Initialize the app when DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
+        // Initialize the app when DOM is ready - similar to G1VE pattern
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Small delay to ensure everything is ready, similar to working implementations
+            await new Promise(resolve => setTimeout(resolve, 50));
             new RockyScheduleApp();
         });
     </script>
