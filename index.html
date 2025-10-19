@@ -130,7 +130,32 @@
     <!-- Base Mini App Script -->
     <script type="module">
         import { sdk } from '@farcaster/miniapp-sdk';
-        // Note: We'll use the SDK's compose functionality for sharing
+        
+        // Call sdk.actions.ready() immediately when SDK is loaded
+        // This is critical for proper mini app display
+        async function initializeSDK() {
+            try {
+                console.log('🔧 SDK imported, attempting ready call...');
+                console.log('SDK available:', typeof sdk !== 'undefined');
+                console.log('SDK actions available:', sdk && sdk.actions ? 'Yes' : 'No');
+                
+                if (sdk && sdk.actions && typeof sdk.actions.ready === 'function') {
+                    console.log('🚀 Calling sdk.actions.ready({ disableNativeGestures: true })...');
+                    await sdk.actions.ready({ disableNativeGestures: true });
+                    console.log('✅ sdk.actions.ready() called successfully!');
+                    return true;
+                } else {
+                    console.log('❌ SDK or actions not available for ready call');
+                    return false;
+                }
+            } catch (error) {
+                console.error('❌ CRITICAL: Failed to call sdk.actions.ready():', error);
+                return false;
+            }
+        }
+
+        // Call ready immediately
+        let sdkReadyPromise = initializeSDK();
         
         // Base Mini App Integration
         class RockyScheduleApp {
@@ -150,20 +175,26 @@
                 this.setupEventListeners();
                 this.checkOnboarding();
                 
-                // Wait for DOM to be fully ready before calling sdk.actions.ready()
-                await new Promise(resolve => setTimeout(resolve, 200));
+                // Wait for DOM to be fully ready
+                await new Promise(resolve => setTimeout(resolve, 100));
                 
-                // Call SDK ready first - this is critical and must be called after app loads
-                // According to Farcaster docs: "After your app is fully loaded and ready to display"
-                const sdkReady = await this.callSdkReady();
+                // Use the global SDK ready promise that was called immediately when module loaded
+                console.log('🔍 Checking if SDK ready was called...');
+                const sdkReady = await sdkReadyPromise;
                 
                 if (sdkReady) {
-                    // SDK is ready, proceed with connection initialization
+                    console.log('✅ SDK ready was successful, initializing Base connection...');
                     await this.initializeBaseConnection();
                 } else {
-                    // Fallback to development mode
-                    this.setupDevMode();
-                    this.updateConnectionStatus(false, 'Development Mode');
+                    console.log('❌ SDK ready failed, using development mode...');
+                    // Try fallback ready call
+                    const fallbackReady = await this.callSdkReady();
+                    if (fallbackReady) {
+                        await this.initializeBaseConnection();
+                    } else {
+                        this.setupDevMode();
+                        this.updateConnectionStatus(false, 'Development Mode');
+                    }
                 }
             }
 
@@ -706,7 +737,10 @@
         }
 
         // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 DOM loaded, initializing RockyScheduleApp...');
+            // Wait a tiny bit to ensure SDK ready call has had time to complete
+            await new Promise(resolve => setTimeout(resolve, 50));
             new RockyScheduleApp();
         });
     </script>
