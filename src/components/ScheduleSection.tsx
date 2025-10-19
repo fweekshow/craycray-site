@@ -33,7 +33,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
   user,
   reminders,
   setReminders,
-  authToken,
+  authToken: _authToken,
   setAuthToken,
   isAuthenticated,
   setIsAuthenticated,
@@ -141,7 +141,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 
       const shareData = {
         text: shareText,
-        embeds: ['https://www.craycray.xyz/']
+        embeds: ['https://www.craycray.xyz/'] as [string]
       }
 
       if (sdk && sdk.actions && sdk.actions.composeCast) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { sdk } from '@farcaster/miniapp-sdk'
 import Header from './components/Header'
 import PresentationSection from './components/PresentationSection'
@@ -44,10 +44,10 @@ function App() {
         const context = await sdk.context
         if (context?.user) {
           setUser({
-            address: context.user.custodyAddress || context.user.verificationAddress || '',
-            username: context.user.username,
-            avatar: context.user.profileImage?.url,
-            fid: context.user.fid,
+            address: (context.user as any).address || (context.user as any).custodyAddress || '',
+            username: (context.user as any).username,
+            avatar: (context.user as any).profileImage?.url || (context.user as any).avatar,
+            fid: (context.user as any).fid,
           })
           setIsConnected(true)
           setConnectionStatus('Connected - Sign in to view schedule')
