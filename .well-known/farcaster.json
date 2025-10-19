@@ -11,6 +11,8 @@
     "version": "1",
     "name": "Rocky - Event Schedule",
     "homeUrl": "https://www.craycray.xyz/",
+    "imageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
+    "buttonTitle": "Open mini app",
     "iconUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png",
     "splashImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
     "splashBackgroundColor": "#D4AF37",
