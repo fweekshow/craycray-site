@@ -1,16 +1,4 @@
 // API endpoint to fetch reminders for a specific inboxId from your devconnect-concierge agent's database
-import { Pool } from 'pg';
-
-// Database connection - requires DATABASE_URL environment variable in Vercel
-// This should be the same DATABASE_URL your devconnect-concierge agent uses
-if (!process.env.DATABASE_URL) {
-  console.error('DATABASE_URL environment variable is not set');
-}
-
-const pool = process.env.DATABASE_URL ? new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-}) : null;
 
 export default async function handler(req, res) {
   // Handle CORS
@@ -32,12 +20,31 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'inboxId is required' });
   }
 
-  if (!pool) {
+  // Import pg dynamically to avoid build issues
+  let Pool;
+  try {
+    const pg = await import('pg');
+    Pool = pg.Pool;
+  } catch (error) {
+    console.error('Failed to import pg:', error);
+    return res.status(500).json({ 
+      error: 'Database connection not available',
+      message: 'PostgreSQL client not available'
+    });
+  }
+
+  // Database connection - requires DATABASE_URL environment variable in Vercel
+  if (!process.env.DATABASE_URL) {
     return res.status(500).json({ 
       error: 'Database not configured',
       message: 'DATABASE_URL environment variable is required'
     });
   }
+
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  });
 
   try {
     // Use the same query as your agent's listAllPendingForInbox function

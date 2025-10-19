@@ -19,10 +19,6 @@
   "description": "",
   "dependencies": {
     "@farcaster/miniapp-sdk": "^0.2.1",
-    "@farcaster/quick-auth": "^0.8.0",
-    "pg": "^8.11.3"
-  },
-  "devDependencies": {
-    "@types/pg": "^8.10.7"
+    "@farcaster/quick-auth": "^0.8.0"
   }
 }
