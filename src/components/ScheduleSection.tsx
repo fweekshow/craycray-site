@@ -41,26 +41,14 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
   connectionStatus,
   setConnectionStatus,
 }) => {
-  const [showOnboarding, setShowOnboarding] = useState(false)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    // Check onboarding status
-    const hasSeenOnboarding = localStorage.getItem('rocky-onboarding-seen')
-    if (!hasSeenOnboarding) {
-      setShowOnboarding(true)
-    }
-
     // Load reminders if authenticated
     if (isAuthenticated && user?.address) {
       loadReminders()
     }
   }, [isAuthenticated, user])
-
-  const hideOnboarding = () => {
-    setShowOnboarding(false)
-    localStorage.setItem('rocky-onboarding-seen', 'true')
-  }
 
   const authenticateUser = async () => {
     try {
@@ -189,38 +177,6 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 
   return (
     <section id="scheduleSection">
-      {/* Onboarding */}
-      {showOnboarding && (
-        <section className="onboarding-section">
-          <div className="onboarding-card">
-            <div className="onboarding-header">
-              <h2>Welcome to Rocky Event Schedule</h2>
-              <p>Your personal event assistant for DevConnect</p>
-            </div>
-            <div className="onboarding-content">
-              <div className="feature">
-                <div className="feature-icon">🤖</div>
-                <h3>Smart Agent Integration</h3>
-                <p>Chat with Rocky Agent to set reminders for sessions you want to attend</p>
-              </div>
-              <div className="feature">
-                <div className="feature-icon">📅</div>
-                <h3>Personal Schedule</h3>
-                <p>View all your DevConnect reminders in one organized place</p>
-              </div>
-              <div className="feature">
-                <div className="feature-icon">📤</div>
-                <h3>Share & Connect</h3>
-                <p>Share your schedule with other attendees and build your network</p>
-              </div>
-            </div>
-            <button className="onboarding-btn" onClick={hideOnboarding}>
-              Get Started
-            </button>
-          </div>
-        </section>
-      )}
-
       {/* Connection Status */}
       <section className="connection-section">
         <div className="connection-status">

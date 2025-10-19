@@ -1,8 +1,8 @@
 import React from 'react'
 
 interface HeaderProps {
-  activeSection: 'presentation' | 'schedule'
-  onSectionChange: (section: 'presentation' | 'schedule') => void
+  activeSection: 'presentation' | 'schedule' | 'schedule-view'
+  onSectionChange: (section: 'presentation' | 'schedule' | 'schedule-view') => void
   subtitle: string
 }
 
@@ -14,13 +14,13 @@ const Header: React.FC<HeaderProps> = ({ activeSection, onSectionChange, subtitl
       <nav className="nav">
         <a 
           href="#" 
-          className={`nav-link ${activeSection === 'presentation' ? 'active' : ''}`}
+          className={`nav-link ${activeSection === 'schedule-view' ? 'active' : ''}`}
           onClick={(e) => {
             e.preventDefault()
-            onSectionChange('presentation')
+            onSectionChange('schedule-view')
           }}
         >
-          Presentation
+          Full Schedule
         </a>
         <a 
           href="#" 
@@ -31,6 +31,16 @@ const Header: React.FC<HeaderProps> = ({ activeSection, onSectionChange, subtitl
           }}
         >
           My Schedule
+        </a>
+        <a 
+          href="#" 
+          className={`nav-link ${activeSection === 'presentation' ? 'active' : ''}`}
+          onClick={(e) => {
+            e.preventDefault()
+            onSectionChange('presentation')
+          }}
+        >
+          About Rocky
         </a>
       </nav>
     </header>

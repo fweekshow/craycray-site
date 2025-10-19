@@ -20,6 +20,28 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'inboxId is required' });
   }
 
+  // Verify Base Quick Auth token for authenticated requests
+  const authorization = req.headers.authorization;
+  if (!authorization?.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized - Token required' });
+  }
+
+  try {
+    const { createClient, Errors } = await import('@farcaster/quick-auth');
+    const client = createClient();
+    
+    const token = authorization.split(' ')[1];
+    const domain = req.headers.host || 'www.craycray.xyz';
+
+    // Verify the JWT token from Base Quick Auth
+    const payload = await client.verifyJwt({ token, domain });
+    console.log('Authenticated user FID:', payload.sub);
+    
+  } catch (error) {
+    console.error('Token verification failed:', error);
+    return res.status(401).json({ error: 'Invalid authentication token' });
+  }
+
   // Import pg dynamically to avoid build issues
   let Pool;
   try {

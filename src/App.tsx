@@ -3,9 +3,10 @@ import { sdk } from '@farcaster/miniapp-sdk'
 import Header from './components/Header'
 import PresentationSection from './components/PresentationSection'
 import ScheduleSection from './components/ScheduleSection'
+import ScheduleViewSection from './components/ScheduleViewSection'
 import Footer from './components/Footer'
 
-type SectionType = 'presentation' | 'schedule'
+type SectionType = 'presentation' | 'schedule' | 'schedule-view'
 
 interface User {
   address: string
@@ -22,8 +23,37 @@ interface Reminder {
   sent: boolean
 }
 
+interface DevConnectEvent {
+  id: number
+  rkey: string
+  created_by: string
+  record_passed_review: {
+    $type: string
+    title: string
+    start_utc: string
+    end_utc: string
+    location: {
+      name: string
+      address: string
+    }
+    organizer: {
+      name: string
+      contact: string
+    }
+    description: string
+    event_type: string
+    expertise: string
+    requires_ticket: boolean
+    sold_out: boolean
+    main_url?: string
+    tickets_url?: string
+  }
+  is_core_event: boolean
+  updated_at: string
+}
+
 function App() {
-  const [activeSection, setActiveSection] = useState<SectionType>('presentation')
+  const [activeSection, setActiveSection] = useState<SectionType>('schedule-view')
   const [user, setUser] = useState<User | null>(null)
   const [reminders, setReminders] = useState<Reminder[]>([])
   const [authToken, setAuthToken] = useState<string | null>(null)
@@ -66,14 +96,32 @@ function App() {
     setActiveSection(section)
   }
 
+  const handleAddToSchedule = (event: DevConnectEvent) => {
+    // Create a reminder from the DevConnect event
+    const newReminder: Reminder = {
+      id: `devconnect-${event.id}`,
+      title: event.record_passed_review.title,
+      description: `DevConnect Event: ${event.record_passed_review.description.slice(0, 100)}...`,
+      time: event.record_passed_review.start_utc,
+      sent: false
+    }
+    
+    // Add to reminders (in a real app, this would send to your backend)
+    setReminders(prev => [...prev, newReminder])
+    console.log('Added event to schedule:', event.record_passed_review.title)
+  }
+
   return (
     <div className="container">
       <Header 
         activeSection={activeSection} 
         onSectionChange={showSection}
-        subtitle={activeSection === 'presentation' 
-          ? 'Presenting Rocky - Event Agents Framework' 
-          : 'Rocky Event Agents - Personal Schedule'
+        subtitle={
+          activeSection === 'presentation' 
+            ? 'About Rocky - Event Agents Framework' 
+            : activeSection === 'schedule-view'
+            ? 'Full Schedule - All DevConnect Events'
+            : 'Rocky Event Agents - Personal Schedule'
         }
       />
       
@@ -91,6 +139,13 @@ function App() {
           isConnected={isConnected}
           connectionStatus={connectionStatus}
           setConnectionStatus={setConnectionStatus}
+        />
+      )}
+
+      {activeSection === 'schedule-view' && (
+        <ScheduleViewSection
+          user={user}
+          onAddToSchedule={handleAddToSchedule}
         />
       )}
       
