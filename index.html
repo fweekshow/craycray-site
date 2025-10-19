@@ -133,8 +133,6 @@
     <script type="module">
         import { sdk } from '@farcaster/miniapp-sdk';
         
-        // Remove early SDK initialization - we'll call ready() when app is ready to display
-        
         // Base Mini App Integration
         class RockyScheduleApp {
             constructor() {
@@ -153,8 +151,14 @@
                 this.setupEventListeners();
                 this.checkOnboarding();
                 
-                // Call ready() ONCE when app is ready to display
+                // Wait for SDK to be available, then call ready() once when app is ready to display
                 try {
+                    // Ensure SDK is imported and available
+                    if (typeof sdk === 'undefined' || !sdk || !sdk.actions) {
+                        throw new Error('SDK not available');
+                    }
+                    
+                    // Call ready() only once when app is ready to display
                     await sdk.actions.ready();
                     await this.initializeBaseConnection();
                 } catch (error) {
@@ -589,7 +593,7 @@
                     const shareText = this.generateShareText();
                     const shareData = {
                         text: shareText,
-                        embeds: ['https://craycray.xyz/app.html']
+                        embeds: ['https://www.craycray.xyz/']
                     };
 
                     // Use Base Mini App SDK compose functionality for sharing
@@ -600,11 +604,11 @@
                         await navigator.share({
                             title: 'My DevConnect Schedule',
                             text: shareText,
-                            url: 'https://craycray.xyz/app.html'
+                            url: 'https://www.craycray.xyz/'
                         });
                     } else {
                         // Final fallback - copy to clipboard
-                        await navigator.clipboard.writeText(`${shareText}\nhttps://craycray.xyz/app.html`);
+                        await navigator.clipboard.writeText(`${shareText}\nhttps://www.craycray.xyz/`);
                         alert('Schedule copied to clipboard!');
                     }
                 } catch (error) {
@@ -612,7 +616,7 @@
                     // Fallback to clipboard
                     try {
                         const shareText = this.generateShareText();
-                        await navigator.clipboard.writeText(`${shareText}\nhttps://craycray.xyz/app.html`);
+                        await navigator.clipboard.writeText(`${shareText}\nhttps://www.craycray.xyz/`);
                         alert('Schedule copied to clipboard!');
                     } catch (clipboardError) {
                         alert('Unable to share at this time. Please try again later.');
@@ -641,7 +645,7 @@
                     
                     const shareData = {
                         text: shareText,
-                        embeds: ['https://craycray.xyz/app.html']
+                        embeds: ['https://www.craycray.xyz/']
                     };
 
                     if (sdk && typeof sdk.actions.composeCast === 'function') {
@@ -650,10 +654,10 @@
                         await navigator.share({
                             title: reminder.title,
                             text: shareText,
-                            url: 'https://craycray.xyz/app.html'
+                            url: 'https://www.craycray.xyz/'
                         });
                     } else {
-                        await navigator.clipboard.writeText(`${shareText}\nhttps://craycray.xyz/app.html`);
+                        await navigator.clipboard.writeText(`${shareText}\nhttps://www.craycray.xyz/`);
                         alert('Reminder shared to clipboard!');
                     }
                 } catch (error) {
