@@ -137,10 +137,21 @@
             async init() {
                 this.setupEventListeners();
                 this.checkOnboarding();
-                // Wait for the next tick to ensure DOM is fully rendered
+                
+                // Wait for DOM to be fully ready
                 await new Promise(resolve => setTimeout(resolve, 100));
-                // Wait for DOM to be fully ready before calling SDK ready
-                await this.initializeBaseConnection();
+                
+                // Call SDK ready first - this is critical for Base Build console detection
+                const sdkReady = await this.callSdkReady();
+                
+                if (sdkReady) {
+                    // SDK is ready, proceed with connection initialization
+                    await this.initializeBaseConnection();
+                } else {
+                    // Fallback to development mode
+                    this.setupDevMode();
+                    this.updateConnectionStatus(false, 'Development Mode');
+                }
             }
 
             checkOnboarding() {
@@ -186,9 +197,33 @@
                 });
             }
 
-            async initializeBaseConnection() {
+            async callSdkReady() {
                 try {
-                    // Check if we're in a mini-app context first
+                    console.log('Attempting to call sdk.actions.ready()...');
+                    
+                    // Check if SDK is available
+                    if (typeof sdk === 'undefined' || !sdk || !sdk.actions) {
+                        console.log('SDK not available for ready call');
+                        return false;
+                    }
+
+                    // Call sdk.actions.ready() as recommended in Base docs
+                    // Disable native gestures to prevent conflicts
+                    await sdk.actions.ready({ disableNativeGestures: true });
+                    
+                    console.log('✅ sdk.actions.ready() called successfully');
+                    return true;
+                } catch (error) {
+                    console.error('❌ Failed to call sdk.actions.ready():', error);
+                    return false;
+                }
+            }
+
+            async initializeBaseConnection() {
+                console.log('Initializing Base connection...');
+                
+                try {
+                    // SDK ready was already called, now just get the context
                     if (typeof sdk === 'undefined' || !sdk) {
                         console.log('SDK not available, using development mode');
                         this.setupDevMode();
@@ -196,22 +231,13 @@
                         return;
                     }
 
-                    // Check if actions are available before calling ready()
-                    if (!sdk.actions || typeof sdk.actions.ready !== 'function') {
-                        console.log('SDK actions not ready, using development mode');
-                        this.setupDevMode();
-                        this.updateConnectionStatus(false, 'Development Mode');
-                        return;
-                    }
-
-                    // Call sdk.actions.ready() once the app has loaded - following Base documentation pattern
-                    // Disable native gestures to prevent conflicts with swipe/drag interactions
-                    await sdk.actions.ready({ disableNativeGestures: true });
+                    console.log('Getting SDK context...');
+                    this.updateConnectionStatus(false, 'Getting user context...');
                     
-                    console.log('SDK actions ready - app is now connected to Base');
-                    
-                    // Get user context from Base (available immediately after ready)
+                    // Get user context from Base (available after ready() has been called)
                     const context = sdk.context;
+                    console.log('SDK context:', context);
+                    
                     if (context?.user) {
                         // Set up basic user info from context
                         this.user = {
@@ -226,9 +252,9 @@
                         this.updateConnectionStatus(true, 'Connected - Sign in to view schedule');
                         this.showAuthSection();
                     } else {
-                        // Fallback for development/testing
-                        this.setupDevMode();
-                        this.updateConnectionStatus(false, 'Development Mode');
+                        console.log('No user context available, showing auth section');
+                        this.updateConnectionStatus(true, 'Connected - Sign in to view schedule');
+                        this.showAuthSection();
                     }
                 } catch (error) {
                     console.error('Failed to connect to Base:', error);
