@@ -9,7 +9,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ activeSection, onSectionChange, subtitle }) => {
   return (
     <header className="header">
-      <h1>CrayCray Studios</h1>
+      <h1>CrayCray</h1>
       <p className="subtitle">{subtitle}</p>
       <nav className="nav">
         <a 

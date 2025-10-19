@@ -219,10 +219,10 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
           <h2>Your Event Reminders</h2>
           <div className="header-actions">
             <button className="share-btn" onClick={shareSchedule}>
-              📤 Share Schedule
+              Share Schedule
             </button>
             <button className="refresh-btn" onClick={loadReminders}>
-              🔄 Refresh
+              Refresh
             </button>
           </div>
         </div>
@@ -235,7 +235,6 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
             </div>
           ) : reminders.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">📅</div>
               <h3>No reminders yet</h3>
               <p>Interact with the Rocky agent to create your first reminder!</p>
             </div>
@@ -243,7 +242,6 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
             <div className="reminders-list">
               {reminders.map((reminder) => (
                 <div key={reminder.id} className="reminder-item">
-                  <div className="reminder-icon">⏰</div>
                   <div className="reminder-content">
                     <h3>{reminder.title}</h3>
                     <p>{reminder.description}</p>
