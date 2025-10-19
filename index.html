@@ -131,24 +131,7 @@
     <script type="module">
         import { sdk } from '@farcaster/miniapp-sdk';
         
-        // Simplified SDK initialization - equivalent to useEffect(() => { sdk.actions.ready(); }, [])
-        let sdkReadyPromise = null;
-        
-        async function initializeSDK() {
-            try {
-                if (sdk && sdk.actions && typeof sdk.actions.ready === 'function') {
-                    await sdk.actions.ready();
-                    return true;
-                }
-                return false;
-            } catch (error) {
-                console.error('Failed to call sdk.actions.ready():', error);
-                return false;
-            }
-        }
-
-        // Initialize SDK immediately when module loads
-        sdkReadyPromise = initializeSDK();
+        // Remove early SDK initialization - we'll call ready() when app is ready to display
         
         // Base Mini App Integration
         class RockyScheduleApp {
@@ -168,9 +151,9 @@
                 this.setupEventListeners();
                 this.checkOnboarding();
                 
-                // Wait for SDK to be ready, then initialize Base connection
+                // Call ready() ONCE when app is ready to display
                 try {
-                    await sdkReadyPromise;
+                    await sdk.actions.ready();
                     await this.initializeBaseConnection();
                 } catch (error) {
                     console.log('SDK initialization failed, using development mode');
@@ -222,12 +205,6 @@
                 });
             }
 
-            async callSdkReady() {
-                // Return the global promise result - ready() is called only once globally
-                // This prevents multiple calls and follows React useEffect pattern
-                console.log('🔍 Returning global SDK ready promise result...');
-                return await sdkReadyPromise;
-            }
 
             async initializeBaseConnection() {
                 console.log('Initializing Base connection...');
@@ -684,11 +661,8 @@
             }
         }
 
-        // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', async () => {
-            console.log('🚀 DOM loaded, initializing RockyScheduleApp...');
-            // Wait a tiny bit to ensure SDK ready call has had time to complete
-            await new Promise(resolve => setTimeout(resolve, 50));
+        // Initialize the app when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
             new RockyScheduleApp();
         });
     </script>
