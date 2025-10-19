@@ -30,6 +30,10 @@
     "ogTitle": "Rocky - DevConnect Concierge",
     "ogDescription": "Get the latest updates on DevCon",
     "ogImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
-    "noindex": false
+    "noindex": false,
+    "requiredCapabilities": [
+      "actions.ready",
+      "actions.signIn"
+    ]
   }
 }
