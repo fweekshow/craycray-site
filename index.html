@@ -3,36 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CrayCray Studios - Rocky</title>
+    <title>Rocky - Event Schedule</title>
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Base Mini App Metadata -->
+    <meta name="fc:miniapp" content='{
+      "version":"next",
+      "imageUrl":"https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901429/rockydevcon_zfegi7.jpg",
+      "button":{
+        "title":"View Schedule",
+        "action":{
+          "type":"launch_miniapp",
+          "name":"Rocky Event Schedule",
+          "url":"https://craycray.xyz/"
+        }
+      }
+    }' />
 </head>
 <body>
     <div class="container">
         <!-- Header Section -->
         <header class="header">
             <h1>CrayCray Studios</h1>
-            <p class="subtitle">Presenting Rocky - Event Agents Framework</p>
+            <p class="subtitle">Rocky Event Agents - Personal Schedule</p>
+            <nav class="nav">
+                <a href="landing.html" class="nav-link">Presentation</a>
+                <a href="index.html" class="nav-link active">My Schedule</a>
+            </nav>
         </header>
 
-        <!-- Video Section -->
-        <section class="video-section">
-            <h2>Video Presentation</h2>
-            <div class="video-container">
-                <video controls preload="metadata">
-                    <source src="https://res.cloudinary.com/dg5qvbxjp/video/upload/v1760661156/Basecamp_vid_ndzww8.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+        <!-- Onboarding -->
+        <section class="onboarding-section" id="onboardingSection" style="display: none;">
+            <div class="onboarding-card">
+                <div class="onboarding-header">
+                    <h2>Welcome to Rocky Event Schedule</h2>
+                    <p>Your personal event assistant for DevConnect</p>
+                </div>
+                <div class="onboarding-content">
+                    <div class="feature">
+                        <div class="feature-icon">🤖</div>
+                        <h3>Smart Agent Integration</h3>
+                        <p>Chat with Rocky Agent to set reminders for sessions you want to attend</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📅</div>
+                        <h3>Personal Schedule</h3>
+                        <p>View all your DevConnect reminders in one organized place</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📤</div>
+                        <h3>Share & Connect</h3>
+                        <p>Share your schedule with other attendees and build your network</p>
+                    </div>
+                </div>
+                <button class="onboarding-btn" id="onboardingBtn">Get Started</button>
             </div>
         </section>
 
-        <!-- PDF Section -->
-        <section class="pdf-section">
-            <h2>Presentation</h2>
-            <div class="pdf-container">
-                <iframe src="https://www.canva.com/design/DAGz8ZPplT8/usUPBi4UE_YLeqz0emIdOw/view?embed" allowfullscreen loading="lazy"></iframe>
+        <!-- Connection Status -->
+        <section class="connection-section">
+            <div class="connection-status" id="connectionStatus">
+                <div class="status-indicator" id="statusIndicator"></div>
+                <span id="statusText">Connecting to Base...</span>
             </div>
-            <div class="pdf-fallback">
-                <p><a href="https://www.canva.com/design/DAGz8ZPplT8/usUPBi4UE_YLeqz0emIdOw/view" target="_blank">View presentation in new tab</a></p>
+            <div class="auth-section" id="authSection" style="display: none;">
+                <button class="signin-btn" id="signInBtn">Sign In to View Your Schedule</button>
+            </div>
+        </section>
+
+        <!-- User Profile -->
+        <section class="profile-section" id="profileSection" style="display: none;">
+            <div class="profile-card">
+                <div class="profile-avatar" id="userAvatar"></div>
+                <div class="profile-info">
+                    <h2 id="userName">Loading...</h2>
+                    <p id="userFid" class="user-fid"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reminders/Schedule -->
+        <section class="schedule-section">
+            <div class="schedule-header">
+                <h2>Your Event Reminders</h2>
+                <div class="header-actions">
+                    <button class="share-btn" id="shareBtn">📤 Share Schedule</button>
+                    <button class="refresh-btn" id="refreshBtn">🔄 Refresh</button>
+                </div>
+            </div>
+            
+            <div class="reminders-container" id="remindersContainer">
+                <div class="loading" id="loadingReminders">
+                    <div class="spinner"></div>
+                    <p>Loading your reminders...</p>
+                </div>
+                
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">📅</div>
+                    <h3>No reminders yet</h3>
+                    <p>Interact with the Rocky agent to create your first reminder!</p>
+                </div>
+                
+                <div class="reminders-list" id="remindersList">
+                    <!-- Reminders will be populated here -->
+                </div>
             </div>
         </section>
 
@@ -41,6 +115,503 @@
             <p>&copy; 2025 CrayCray Studios. All rights reserved.</p>
         </footer>
     </div>
+
+    <!-- Base Mini App Script -->
+    <script type="module">
+        import { sdk } from '@farcaster/miniapp-sdk';
+        // Note: We'll use the SDK's compose functionality for sharing
+        
+        // Base Mini App Integration
+        class RockyScheduleApp {
+            constructor() {
+                this.user = null;
+                this.reminders = [];
+                this.authToken = null;
+                this.isAuthenticated = false;
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.checkOnboarding();
+                this.initializeBaseConnection();
+            }
+
+            checkOnboarding() {
+                // Show onboarding for first-time users (check localStorage)
+                const hasSeenOnboarding = localStorage.getItem('rocky-onboarding-seen');
+                if (!hasSeenOnboarding) {
+                    this.showOnboarding();
+                }
+            }
+
+            showOnboarding() {
+                const onboardingSection = document.getElementById('onboardingSection');
+                if (onboardingSection) {
+                    onboardingSection.style.display = 'block';
+                }
+            }
+
+            hideOnboarding() {
+                const onboardingSection = document.getElementById('onboardingSection');
+                if (onboardingSection) {
+                    onboardingSection.style.display = 'none';
+                    localStorage.setItem('rocky-onboarding-seen', 'true');
+                }
+                // Show auth section after onboarding
+                this.showAuthSection();
+            }
+
+            setupEventListeners() {
+                document.getElementById('refreshBtn').addEventListener('click', () => {
+                    this.loadReminders();
+                });
+                
+                document.getElementById('shareBtn').addEventListener('click', () => {
+                    this.shareSchedule();
+                });
+
+                document.getElementById('signInBtn')?.addEventListener('click', () => {
+                    this.authenticateUser();
+                });
+
+                document.getElementById('onboardingBtn')?.addEventListener('click', () => {
+                    this.hideOnboarding();
+                });
+            }
+
+            async initializeBaseConnection() {
+                try {
+                    // Initialize Base Mini App SDK
+                    await sdk.actions.ready();
+                    
+                    // Get user context from Base (available immediately)
+                    const context = sdk.context;
+                    if (context?.user) {
+                        // Set up basic user info from context
+                        this.user = {
+                            address: context.user.custodyAddress || context.user.verificationAddress,
+                            username: context.user.username,
+                            avatar: context.user.profileImage?.url,
+                            fid: context.user.fid,
+                            context: context
+                        };
+                        
+                        this.displayUser();
+                        this.updateConnectionStatus(true, 'Connected - Sign in to view schedule');
+                        this.showAuthSection();
+                    } else {
+                        // Fallback for development/testing
+                        this.setupDevMode();
+                        this.updateConnectionStatus(false, 'Development Mode');
+                    }
+                } catch (error) {
+                    console.error('Failed to connect to Base:', error);
+                    // Fallback for development
+                    this.setupDevMode();
+                    this.updateConnectionStatus(false, 'Development Mode');
+                }
+            }
+
+            async authenticateUser() {
+                try {
+                    this.updateConnectionStatus(false, 'Signing in...');
+                    
+                    // Use Base Quick Auth to get JWT token
+                    const { token } = await sdk.quickAuth.getToken();
+                    this.authToken = token;
+                    
+                    // Verify token with your backend to get trusted user data
+                    const response = await sdk.quickAuth.fetch(`${window.location.origin}/api/auth`, {
+                        headers: { "Authorization": `Bearer ${token}` }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Authentication failed');
+                    }
+                    
+                    const authData = await response.json();
+                    
+                    // Update user with authenticated data
+                    this.user = {
+                        ...this.user,
+                        fid: authData.fid,
+                        authenticatedAddress: authData.address || this.user.address,
+                        isAuthenticated: true
+                    };
+                    
+                    this.isAuthenticated = true;
+                    this.updateConnectionStatus(true, 'Authenticated');
+                    this.hideAuthSection();
+                    await this.loadReminders();
+                    
+                } catch (error) {
+                    console.error('Authentication failed:', error);
+                    this.updateConnectionStatus(false, 'Sign in failed');
+                    this.showAuthSection();
+                }
+            }
+
+            showAuthSection() {
+                const authSection = document.getElementById('authSection');
+                if (authSection) {
+                    authSection.style.display = 'block';
+                }
+            }
+
+            hideAuthSection() {
+                const authSection = document.getElementById('authSection');
+                if (authSection) {
+                    authSection.style.display = 'none';
+                }
+            }
+
+            setupDevMode() {
+                // Mock user for development
+                this.user = {
+                    address: '0x1234...5678',
+                    username: 'Dev User',
+                    avatar: null
+                };
+                this.displayUser();
+                this.loadMockReminders();
+            }
+
+            displayUser() {
+                const profileSection = document.getElementById('profileSection');
+                const userName = document.getElementById('userName');
+                const userFid = document.getElementById('userFid');
+                const userAvatar = document.getElementById('userAvatar');
+
+                profileSection.style.display = 'block';
+                userName.textContent = this.user.username || 'Base User';
+                
+                // Show FID instead of address per Base guidelines
+                if (this.user.fid) {
+                    userFid.textContent = `FID: ${this.user.fid}`;
+                } else {
+                    userFid.textContent = 'Base User';
+                }
+                
+                if (this.user.avatar) {
+                    userAvatar.style.backgroundImage = `url(${this.user.avatar})`;
+                }
+            }
+
+            updateConnectionStatus(connected, message = null) {
+                const indicator = document.getElementById('statusIndicator');
+                const text = document.getElementById('statusText');
+                
+                if (connected) {
+                    indicator.className = 'status-indicator connected';
+                    text.textContent = 'Connected to Base';
+                } else {
+                    indicator.className = 'status-indicator disconnected';
+                    text.textContent = message || 'Not Connected';
+                }
+            }
+
+            async loadReminders() {
+                const loading = document.getElementById('loadingReminders');
+                const emptyState = document.getElementById('emptyState');
+                const remindersList = document.getElementById('remindersList');
+
+                loading.style.display = 'block';
+                emptyState.style.display = 'none';
+                remindersList.innerHTML = '';
+
+                try {
+                    // Replace with actual devconnect-agent API call
+                    const reminders = await this.fetchRemindersFromAgent();
+                    this.reminders = reminders;
+                    this.displayReminders();
+                } catch (error) {
+                    console.error('Failed to load reminders:', error);
+                    // Fallback to mock data
+                    this.loadMockReminders();
+                }
+
+                loading.style.display = 'none';
+            }
+
+            async fetchRemindersFromAgent() {
+                try {
+                    if (!this.isAuthenticated || !this.user?.address && !this.user?.authenticatedAddress) {
+                        console.log('User not authenticated or no address available');
+                        return [];
+                    }
+
+                    // Use the authenticated address as inboxId - this is how they message the agent
+                    const inboxId = (this.user.authenticatedAddress || this.user.address).toLowerCase();
+                    
+                    // Connect to your devconnect-concierge agent API with authentication
+                    const headers = {
+                        'Content-Type': 'application/json',
+                    };
+                    
+                    // Include auth token if available
+                    if (this.authToken) {
+                        headers['Authorization'] = `Bearer ${this.authToken}`;
+                    }
+                    
+                    const response = await fetch(`/api/reminders/${inboxId}`, {
+                        method: 'GET',
+                        headers,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('Fetched reminders from agent:', data);
+                    
+                    // Transform your Reminder format to our app format
+                    return data.map(reminder => ({
+                        id: reminder.id,
+                        title: this.extractTitleFromMessage(reminder.message),
+                        description: reminder.message,
+                        time: new Date(reminder.target_time),
+                        type: this.determineReminderType(reminder.message),
+                        status: reminder.sent ? 'completed' : 'active',
+                        originalReminder: reminder
+                    }));
+                } catch (error) {
+                    console.error('Failed to fetch reminders from agent:', error);
+                    
+                    // For development, try to connect to local agent if available
+                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                        try {
+                            const localHeaders = { 'Content-Type': 'application/json' };
+                            if (this.authToken) {
+                                localHeaders['Authorization'] = `Bearer ${this.authToken}`;
+                            }
+                            
+                            const localResponse = await fetch(`http://localhost:3000/api/reminders/${inboxId}`, {
+                                method: 'GET',
+                                headers: localHeaders,
+                            });
+                            
+                            if (localResponse.ok) {
+                                const data = await localResponse.json();
+                                return data.map(reminder => ({
+                                    id: reminder.id,
+                                    title: this.extractTitleFromMessage(reminder.message),
+                                    description: reminder.message,
+                                    time: new Date(reminder.target_time),
+                                    type: this.determineReminderType(reminder.message),
+                                    status: reminder.sent ? 'completed' : 'active',
+                                    originalReminder: reminder
+                                }));
+                            }
+                        } catch (localError) {
+                            console.log('Local agent not available:', localError);
+                        }
+                    }
+                    
+                    // Return empty array as fallback
+                    return [];
+                }
+            }
+
+            extractTitleFromMessage(message) {
+                // Extract a concise title from the reminder message
+                if (message.length <= 50) return message;
+                return message.substring(0, 47) + '...';
+            }
+
+            determineReminderType(message) {
+                const lowerMessage = message.toLowerCase();
+                if (lowerMessage.includes('workshop') || lowerMessage.includes('session') || lowerMessage.includes('talk')) {
+                    return 'event';
+                }
+                if (lowerMessage.includes('meeting') || lowerMessage.includes('call')) {
+                    return 'reminder';
+                }
+                return 'event'; // Default to event for DevConnect context
+            }
+
+            loadMockReminders() {
+                // Mock data for development - realistic DevConnect sessions
+                this.reminders = [
+                    {
+                        id: 1,
+                        title: "Builder Bootcamp: Beginner to Advanced",
+                        description: "BuidlGuidl's Builder Bootcamp - daily sessions starting at 10 AM. Perfect for Level 1 learning!",
+                        time: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours from now
+                        type: "event",
+                        status: "active"
+                    },
+                    {
+                        id: 2,
+                        title: "The Bankless Summit",
+                        description: "Join the Bankless team for talks on the future of Ethereum and decentralized media",
+                        time: new Date(Date.now() + 6 * 60 * 60 * 1000), // 6 hours from now
+                        type: "event",
+                        status: "active"
+                    },
+                    {
+                        id: 3,
+                        title: "DeFi Security Summit",
+                        description: "2-day conference on DeFi security best practices and latest developments",
+                        time: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours from now
+                        type: "event",
+                        status: "active"
+                    }
+                ];
+                this.displayReminders();
+            }
+
+            displayReminders() {
+                const remindersList = document.getElementById('remindersList');
+                const emptyState = document.getElementById('emptyState');
+
+                if (this.reminders.length === 0) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                emptyState.style.display = 'none';
+
+                this.reminders.forEach(reminder => {
+                    const reminderElement = this.createReminderElement(reminder);
+                    remindersList.appendChild(reminderElement);
+                });
+            }
+
+            createReminderElement(reminder) {
+                const element = document.createElement('div');
+                element.className = `reminder-item ${reminder.type}`;
+                
+                const timeUntil = this.formatTimeUntil(reminder.time);
+                
+                element.innerHTML = `
+                    <div class="reminder-icon">${reminder.type === 'event' ? '🎯' : '⏰'}</div>
+                    <div class="reminder-content">
+                        <h4>${reminder.title}</h4>
+                        <p>${reminder.description}</p>
+                        <div class="reminder-meta">
+                            <span class="reminder-time">${timeUntil}</span>
+                            <span class="reminder-status ${reminder.status}">${reminder.status}</span>
+                        </div>
+                    </div>
+                    <div class="reminder-actions">
+                        <button class="action-btn share-reminder-btn" title="Share this reminder">📤</button>
+                        <button class="action-btn">✓</button>
+                    </div>
+                `;
+
+                // Add share button event listener
+                const shareBtn = element.querySelector('.share-reminder-btn');
+                if (shareBtn) {
+                    shareBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.shareSpecificReminder(reminder);
+                    });
+                }
+
+                return element;
+            }
+
+            formatTimeUntil(date) {
+                const now = new Date();
+                const diff = date.getTime() - now.getTime();
+                
+                if (diff < 0) return 'Past due';
+                
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                
+                if (hours > 0) {
+                    return `in ${hours}h ${minutes}m`;
+                } else {
+                    return `in ${minutes}m`;
+                }
+            }
+
+            async shareSchedule() {
+                try {
+                    const shareText = this.generateShareText();
+                    const shareData = {
+                        text: shareText,
+                        embeds: ['https://craycray.xyz/app.html']
+                    };
+
+                    // Use Base Mini App SDK compose functionality for sharing
+                    if (sdk && typeof sdk.actions.composeCast === 'function') {
+                        await sdk.actions.composeCast(shareData);
+                    } else if (navigator.share) {
+                        // Fallback to Web Share API if available
+                        await navigator.share({
+                            title: 'My DevConnect Schedule',
+                            text: shareText,
+                            url: 'https://craycray.xyz/app.html'
+                        });
+                    } else {
+                        // Final fallback - copy to clipboard
+                        await navigator.clipboard.writeText(`${shareText}\nhttps://craycray.xyz/app.html`);
+                        alert('Schedule copied to clipboard!');
+                    }
+                } catch (error) {
+                    console.error('Failed to share schedule:', error);
+                    // Fallback to clipboard
+                    try {
+                        const shareText = this.generateShareText();
+                        await navigator.clipboard.writeText(`${shareText}\nhttps://craycray.xyz/app.html`);
+                        alert('Schedule copied to clipboard!');
+                    } catch (clipboardError) {
+                        alert('Unable to share at this time. Please try again later.');
+                    }
+                }
+            }
+
+            generateShareText() {
+                const activeReminders = this.reminders.filter(r => r.status === 'active').length;
+                const username = this.user?.username || 'Base user';
+                
+                if (activeReminders === 0) {
+                    return `🎯 Just connected to DevConnect with my personal Rocky Event Agent! Ready to make the most of this incredible event. Who else is going? #DevConnect #BaseChain #RockyAgent`;
+                } else if (activeReminders === 1) {
+                    return `📅 DevConnect is going to be amazing! I've got 1 session scheduled with Rocky Event Agent handling my reminders. What's on your schedule? #DevConnect #BaseChain #RockyAgent`;
+                } else {
+                    return `🚀 DevConnect schedule is locked and loaded! ${activeReminders} sessions planned and Rocky Event Agent is keeping me organized. This is gonna be epic! #DevConnect #BaseChain #RockyAgent`;
+                }
+            }
+
+
+            async shareSpecificReminder(reminder) {
+                try {
+                    const timeUntil = this.formatTimeUntil(reminder.time);
+                    const shareText = `🎯 ${reminder.title}\n\n${reminder.description}\n\n⏰ ${timeUntil}\n\nRocky Event Agent reminded me about this DevConnect session! Are you going too? #DevConnect #BaseChain #RockyAgent`;
+                    
+                    const shareData = {
+                        text: shareText,
+                        embeds: ['https://craycray.xyz/app.html']
+                    };
+
+                    if (sdk && typeof sdk.actions.composeCast === 'function') {
+                        await sdk.actions.composeCast(shareData);
+                    } else if (navigator.share) {
+                        await navigator.share({
+                            title: reminder.title,
+                            text: shareText,
+                            url: 'https://craycray.xyz/app.html'
+                        });
+                    } else {
+                        await navigator.clipboard.writeText(`${shareText}\nhttps://craycray.xyz/app.html`);
+                        alert('Reminder shared to clipboard!');
+                    }
+                } catch (error) {
+                    console.error('Failed to share reminder:', error);
+                    alert('Unable to share this reminder right now.');
+                }
+            }
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new RockyScheduleApp();
+        });
+    </script>
 </body>
 </html>
-

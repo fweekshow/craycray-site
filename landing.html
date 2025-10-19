@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrayCray Studios - Rocky</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Base Mini App Metadata -->
+    <meta name="fc:miniapp" content='{
+      "version":"next",
+      "imageUrl":"https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901429/rockydevcon_zfegi7.jpg",
+      "button":{
+        "title":"View Schedule",
+        "action":{
+          "type":"launch_miniapp",
+          "name":"Rocky Event Schedule",
+          "url":"https://craycray.xyz/"
+        }
+      }
+    }' />
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1>CrayCray Studios</h1>
+            <p class="subtitle">Presenting Rocky - Event Agents Framework</p>
+            <nav class="nav">
+                <a href="landing.html" class="nav-link active">Presentation</a>
+                <a href="index.html" class="nav-link">My Schedule</a>
+            </nav>
+        </header>
+
+        <!-- Video Section -->
+        <section class="video-section">
+            <h2>Video Presentation</h2>
+            <div class="video-container">
+                <video controls preload="metadata">
+                    <source src="https://res.cloudinary.com/dg5qvbxjp/video/upload/v1760661156/Basecamp_vid_ndzww8.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </section>
+
+        <!-- PDF Section -->
+        <section class="pdf-section">
+            <h2>Presentation</h2>
+            <div class="pdf-container">
+                <iframe src="https://www.canva.com/design/DAGz8ZPplT8/usUPBi4UE_YLeqz0emIdOw/view?embed" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="pdf-fallback">
+                <p><a href="https://www.canva.com/design/DAGz8ZPplT8/usUPBi4UE_YLeqz0emIdOw/view" target="_blank">View presentation in new tab</a></p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 CrayCray Studios. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
+
