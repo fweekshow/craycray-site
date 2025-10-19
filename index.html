@@ -19,6 +19,17 @@
         }
       }
     }' />
+    
+    <!-- Frame metadata for Base embed rendering -->
+    <meta name="fc:frame" content='{
+      "name":"Rocky - Event Schedule",
+      "iconUrl":"https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png",
+      "homeUrl":"https://www.craycray.xyz/",
+      "imageUrl":"https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
+      "buttonTitle":"Launch App",
+      "description":"DevConnect Event Concierge - Your personal event schedule",
+      "primaryCategory":"utility"
+    }' />
 </head>
 <body>
     <div class="container">
@@ -201,29 +212,40 @@
 
             async callSdkReady() {
                 try {
-                    console.log('Attempting to call sdk.actions.ready()...');
+                    console.log('🔧 Attempting to call sdk.actions.ready()...');
+                    console.log('SDK available:', typeof sdk !== 'undefined');
+                    console.log('SDK object:', sdk);
                     
-                    // Check if SDK is available - but always try to call ready() for Farcaster mini apps
+                    // Check if SDK is available
                     if (typeof sdk === 'undefined' || !sdk) {
-                        console.log('SDK not available for ready call - might be in development mode');
+                        console.log('❌ SDK not available for ready call - might be in development mode');
                         return false;
                     }
 
                     if (!sdk.actions || typeof sdk.actions.ready !== 'function') {
-                        console.log('sdk.actions.ready() function not available');
+                        console.log('❌ sdk.actions.ready() function not available');
+                        console.log('Available actions:', sdk.actions ? Object.keys(sdk.actions) : 'No actions available');
                         return false;
                     }
 
-                    // According to Farcaster docs: "After your app loads, you must call sdk.actions.ready() to hide the splash screen"
-                    // This is the critical call that makes the app display properly in Farcaster clients
-                    console.log('Calling sdk.actions.ready() - this is required to display the app');
-                    await sdk.actions.ready();
+                    // According to Base troubleshooting docs: Disable native gestures when calling ready
+                    // This prevents gesture conflicts and app dismissal issues
+                    console.log('🚀 Calling sdk.actions.ready({ disableNativeGestures: true })...');
+                    console.log('This is required per Base docs for gesture conflict prevention');
                     
-                    console.log('✅ sdk.actions.ready() called successfully - splash screen should now be hidden');
+                    await sdk.actions.ready({ disableNativeGestures: true });
+                    
+                    console.log('✅ sdk.actions.ready() called successfully!');
+                    console.log('🎉 App should now display properly - splash screen should be hidden');
                     return true;
                 } catch (error) {
-                    console.error('❌ Failed to call sdk.actions.ready():', error);
-                    console.error('This might cause infinite loading screen in Farcaster clients');
+                    console.error('❌ CRITICAL: Failed to call sdk.actions.ready():', error);
+                    console.error('This WILL cause infinite loading screen in Farcaster/Base clients');
+                    console.error('Error details:', {
+                        message: error.message,
+                        stack: error.stack,
+                        name: error.name
+                    });
                     return false;
                 }
             }
