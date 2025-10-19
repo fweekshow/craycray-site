@@ -3,5 +3,31 @@
     "header": "eyJmaWQiOjQ5ODU0NCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDBGNTJDQjQzOTJEMkZFYjJhMEMxMjkwYTNlN0UyMUJjMjI0NTNBNzIifQ",
     "payload": "eyJkb21haW4iOiJ3d3cuY3JheWNyYXkueHl6In0",
     "signature": "dCh6562ZBLJN6KP2HUsiS8+U4U17/WmE2ALpG+XrycB6t2XHl+IuU/xoNBJiioc7i5Aegyj1+wswMjKZb/d6QBs="
+  },
+  "baseBuilder": {
+    "allowedAddresses": ["0x22209CFC1397832f32160239C902B10A624cAB1A"]
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "Rocky - Event Schedule",
+    "homeUrl": "https://www.craycray.xyz/",
+    "iconUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png",
+    "splashImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
+    "splashBackgroundColor": "#D4AF37",
+    "webhookUrl": "https://www.craycray.xyz/api/webhook",
+    "subtitle": "DevConnect Event Concierge",
+    "description": "Your personal event schedule powered by Rocky Agent. Get reminders for DevConnect sessions and never miss the talks you care about.",
+    "screenshotUrls": [
+      "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
+      "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png"
+    ],
+    "primaryCategory": "social",
+    "tags": ["events", "schedule", "base", "agent"],
+    "heroImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
+    "tagline": "Every event needs an Agent",
+    "ogTitle": "Rocky - DevConnect Concierge",
+    "ogDescription": "Get the latest updates on DevCon",
+    "ogImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
+    "noindex": false
   }
 }
