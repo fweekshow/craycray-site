@@ -131,42 +131,23 @@
     <script type="module">
         import { sdk } from '@farcaster/miniapp-sdk';
         
-        // Global flag to ensure ready() is called only once
-        let sdkReadyCalled = false;
+        // Simplified SDK initialization - equivalent to useEffect(() => { sdk.actions.ready(); }, [])
         let sdkReadyPromise = null;
-
-        // Call sdk.actions.ready() immediately when SDK is loaded - equivalent to React useEffect
-        // This prevents jitter and content reflows as mentioned in the docs
+        
         async function initializeSDK() {
-            // Prevent multiple calls (similar to React useEffect with empty dependency array)
-            if (sdkReadyCalled) {
-                console.log('🔄 SDK ready already called, returning cached promise');
-                return sdkReadyPromise;
-            }
-
-            sdkReadyCalled = true;
-            
             try {
-                console.log('🔧 SDK imported, attempting ready call (first time)...');
-                console.log('SDK available:', typeof sdk !== 'undefined');
-                console.log('SDK actions available:', sdk && sdk.actions ? 'Yes' : 'No');
-                
                 if (sdk && sdk.actions && typeof sdk.actions.ready === 'function') {
-                    console.log('🚀 Calling sdk.actions.ready() - following Base migration guide pattern...');
                     await sdk.actions.ready();
-                    console.log('✅ sdk.actions.ready() called successfully!');
                     return true;
-                } else {
-                    console.log('❌ SDK or actions not available for ready call');
-                    return false;
                 }
+                return false;
             } catch (error) {
-                console.error('❌ CRITICAL: Failed to call sdk.actions.ready():', error);
+                console.error('Failed to call sdk.actions.ready():', error);
                 return false;
             }
         }
 
-        // Call ready immediately when module loads - prevents re-renders/reflows
+        // Initialize SDK immediately when module loads
         sdkReadyPromise = initializeSDK();
         
         // Base Mini App Integration
@@ -183,23 +164,16 @@
             }
 
             async init() {
-                // Set up the app first
+                // Set up the app
                 this.setupEventListeners();
                 this.checkOnboarding();
                 
-                // Wait for DOM to be fully ready
-                await new Promise(resolve => setTimeout(resolve, 100));
-                
-                // Use the global SDK ready promise that was called immediately when module loaded
-                // This prevents multiple calls and follows React useEffect pattern
-                console.log('🔍 Checking if SDK ready was called...');
-                const sdkReady = await sdkReadyPromise;
-                
-                if (sdkReady) {
-                    console.log('✅ SDK ready was successful, initializing Base connection...');
+                // Wait for SDK to be ready, then initialize Base connection
+                try {
+                    await sdkReadyPromise;
                     await this.initializeBaseConnection();
-                } else {
-                    console.log('❌ SDK ready failed, using development mode...');
+                } catch (error) {
+                    console.log('SDK initialization failed, using development mode');
                     this.setupDevMode();
                     this.updateConnectionStatus(false, 'Development Mode');
                 }
