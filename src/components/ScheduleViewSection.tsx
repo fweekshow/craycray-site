@@ -332,7 +332,7 @@ const ScheduleViewSection: React.FC<ScheduleViewSectionProps> = ({
                       const endTime = formatDateTime(event.record_passed_review.end_utc).time
                       
                       // Get event type styling - simplified to black/white/sky blue
-                      const getEventTypeClasses = (eventType: string) => {
+                      const getEventTypeClasses = (_eventType: string) => {
                         return 'bg-gray-700 text-white border border-gray-600'
                       }
 
