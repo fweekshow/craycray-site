@@ -5,17 +5,16 @@
     "signature": ""
   },
   "baseBuilder": {
-    "ownerAddress": "0x22209CFC1397832f32160239C902B10A624cAB1A",
-    "allowedAddresses": [""]
+    "ownerAddress": "0x22209CFC1397832f32160239C902B10A624cAB1A"
   },
   "miniapp": {
     "version": "1",
     "name": "Rocky - Event Schedule",
-    "homeUrl": "https://craycray.xyz/",
+    "homeUrl": "https://www.craycray.xyz/",
     "iconUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png",
     "splashImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901429/rockydevcon_zfegi7.jpg",
     "splashBackgroundColor": "#2B2520",
-    "webhookUrl": "https://craycray.xyz/api/webhook",
+    "webhookUrl": "https://www.craycray.xyz/api/webhook",
     "subtitle": "Never miss an event again",
     "description": "Your personal event schedule powered by Rocky Agent. Get reminders for DevConnect sessions and never miss the talks you care about.",
     "screenshotUrls": [

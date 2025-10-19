@@ -39,11 +39,15 @@ export default async function handler(req, res) {
     // Get additional user info from the JWT payload
     // The payload contains: { iat, iss, exp, sub (FID), aud }
     
+    // For Base Mini Apps, we can get the address from the JWT token or context
+    // The subject (sub) is the FID, but we need the wallet address for inboxId
+    // Since this is called from the mini-app, the context should already have the address
+    
     return res.json({
       fid: payload.sub,
       authenticated: true,
-      // Note: You may need to fetch wallet address separately using FID
-      // or get it from your user database if you have FID -> address mapping
+      // The address will be available from the mini-app context
+      // This API just verifies the JWT token is valid
     });
     
   } catch (error) {

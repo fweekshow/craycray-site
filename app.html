@@ -9,13 +9,13 @@
     <!-- Base Mini App Metadata -->
     <meta name="fc:miniapp" content='{
       "version":"next",
-      "imageUrl":"https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901429/rockydevcon_zfegi7.jpg",
+      "imageUrl":"https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png",
       "button":{
         "title":"View Schedule",
         "action":{
           "type":"launch_miniapp",
           "name":"Rocky Event Schedule",
-          "url":"https://craycray.xyz/"
+          "url":"https://craycray.xyz/app.html"
         }
       }
     }' />
@@ -27,8 +27,8 @@
             <h1>CrayCray Studios</h1>
             <p class="subtitle">Rocky Event Agents - Personal Schedule</p>
             <nav class="nav">
-                <a href="landing.html" class="nav-link">Presentation</a>
-                <a href="index.html" class="nav-link active">My Schedule</a>
+                <a href="index.html" class="nav-link">Presentation</a>
+                <a href="app.html" class="nav-link active">My Schedule</a>
             </nav>
         </header>
 
@@ -233,26 +233,16 @@
                     const authData = await response.json();
                     
                     // Update user with authenticated data
-                    // Keep the address from context since that's what we need for inboxId
                     this.user = {
                         ...this.user,
                         fid: authData.fid,
-                        authenticatedAddress: this.user.address, // Use address from Base context
+                        authenticatedAddress: authData.address || this.user.address,
                         isAuthenticated: true
                     };
                     
                     this.isAuthenticated = true;
                     this.updateConnectionStatus(true, 'Authenticated');
                     this.hideAuthSection();
-                    
-                    // Debug logging
-                    console.log('Authentication successful:', {
-                        user: this.user,
-                        isAuthenticated: this.isAuthenticated,
-                        address: this.user.address,
-                        authenticatedAddress: this.user.authenticatedAddress
-                    });
-                    
                     await this.loadReminders();
                     
                 } catch (error) {
