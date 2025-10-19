@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     
     <!-- Base Mini App Metadata -->
-    <meta name="fc:miniapp" content='{"version":"next","imageUrl":"https://res.cloudinary.com/dg5qvbxjp/image/upload/ar_3:2,c_crop,w_1200,h_800,f_png/v1760906596/Blocky_Rock_Character_with_Grin_eqxbgq.png","button":{"title":"View Schedule","action":{"type":"launch_frame","url":"https://www.craycray.xyz/","name":"Rocky Event Schedule","splashImageUrl":"https://res.cloudinary.com/dg5qvbxjp/image/upload/w_200,h_200,c_crop,f_png/v1760906596/Blocky_Rock_Character_with_Grin_eqxbgq.png","splashBackgroundColor":"#D4AF37"}}}' />
+    <meta name="fc:miniapp" content='{"version":"next","imageUrl":"https://res.cloudinary.com/dg5qvbxjp/image/upload/ar_3:2,c_crop,w_1200,h_800,f_png/v1760906596/Blocky_Rock_Character_with_Grin_eqxbgq.png","button":{"title":"View Schedule","action":{"type":"launch_miniapp","url":"https://www.craycray.xyz/","name":"Rocky Event Schedule","splashImageUrl":"https://res.cloudinary.com/dg5qvbxjp/image/upload/w_200,h_200,c_crop,f_png/v1760906596/Blocky_Rock_Character_with_Grin_eqxbgq.png","splashBackgroundColor":"#D4AF37"}}}' />
 </head>
 <body>
     <div class="container">
@@ -16,8 +16,8 @@
             <h1>CrayCray Studios</h1>
             <p class="subtitle">Presenting Rocky - Event Agents Framework</p>
             <nav class="nav">
-                <a href="landing.html" class="nav-link active">Presentation</a>
-                <a href="index.html" class="nav-link">My Schedule</a>
+                <a href="#" class="nav-link active" onclick="navigateToPage('landing.html', this)">Presentation</a>
+                <a href="#" class="nav-link" onclick="navigateToPage('index.html', this)">My Schedule</a>
             </nav>
         </header>
 
@@ -48,6 +48,41 @@
             <p>&copy; 2025 CrayCray Studios. All rights reserved.</p>
         </footer>
     </div>
+
+    <!-- Base Mini App Script -->
+    <script type="module">
+        import { sdk } from '@farcaster/miniapp-sdk';
+        
+        // Navigation function for Mini App
+        window.navigateToPage = async function(url, element) {
+            try {
+                // Use SDK navigation if available
+                if (typeof sdk !== 'undefined' && sdk.actions && sdk.actions.openUrl) {
+                    await sdk.actions.openUrl(url);
+                } else {
+                    // Fallback to regular navigation
+                    window.location.href = url;
+                }
+            } catch (error) {
+                console.error('Navigation failed:', error);
+                // Fallback to regular navigation
+                window.location.href = url;
+            }
+        };
+
+        // Initialize SDK for landing page
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Call ready() for Mini App initialization
+                if (typeof sdk !== 'undefined' && sdk.actions && sdk.actions.ready) {
+                    await sdk.actions.ready();
+                    console.log('Landing page SDK ready');
+                }
+            } catch (error) {
+                console.log('SDK initialization failed on landing page:', error);
+            }
+        });
+    </script>
 </body>
 </html>
 
