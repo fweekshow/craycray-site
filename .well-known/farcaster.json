@@ -30,7 +30,7 @@
     "ogTitle": "Rocky - DevConnect Concierge",
     "ogDescription": "Get the latest updates on DevCon",
     "ogImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/ar_1.5,c_crop,w_600,h_400,f_png/v1760906596/Blocky_Rock_Character_with_Grin_eqxbgq.png",
-    "noindex": false,
+    "noindex": true,
     "requiredCapabilities": [
       "actions.ready",
       "actions.signIn"
