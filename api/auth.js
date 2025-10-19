@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     const client = createClient();
     
     const token = authorization.split(' ')[1];
-    const domain = req.headers.host || 'craycray.xyz';
+    const domain = req.headers.host || 'www.craycray.xyz';
 
     // Verify the JWT token from Base Quick Auth
     const payload = await client.verifyJwt({ token, domain });
