@@ -1,4 +1,26 @@
 {
+  "frame": {
+    "name": "Rocky",
+    "version": "1",
+    "iconUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png",
+    "homeUrl": "https://www.craycray.xyz/",
+    "imageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
+    "buttonTitle": "Open mini app",
+    "splashImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
+    "splashBackgroundColor": "#D4AF37",
+    "webhookUrl": "https://www.craycray.xyz/api/webhook",
+    "subtitle": "Make your Schedule",
+    "description": "Experience the future of events. Connect with friends, join groups, pick your schedule",
+    "primaryCategory": "social",
+    "tags": [
+      "social",
+      "agents"
+    ],
+    "tagline": "Every event needs an Agent",
+    "ogTitle": "Rocky - DevConnect Concierge",
+    "ogDescription": "Get the latest updates on DevCon",
+    "ogImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png"
+  },
   "accountAssociation": {
     "header": "eyJmaWQiOjQ5ODU0NCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDBGNTJDQjQzOTJEMkZFYjJhMEMxMjkwYTNlN0UyMUJjMjI0NTNBNzIifQ",
     "payload": "eyJkb21haW4iOiJ3d3cuY3JheWNyYXkueHl6In0",
@@ -6,38 +28,5 @@
   },
   "baseBuilder": {
     "ownerAddress": "0x22209CFC1397832f32160239C902B10A624cAB1A"
-  },
-  "frame": {
-    "name": "Rocky - Event Schedule",
-    "iconUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png",
-    "homeUrl": "https://www.craycray.xyz/",
-    "imageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
-    "buttonTitle": "Launch App",
-    "description": "DevConnect Event Concierge - Your personal event schedule",
-    "primaryCategory": "utility",
-    "tags": ["events", "schedule", "base", "agent"],
-    "noindex": false
-  },
-  "miniapp": {
-    "version": "1",
-    "name": "Rocky - Event Schedule",
-    "homeUrl": "https://www.craycray.xyz/",
-    "iconUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png",
-    "splashImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
-    "splashBackgroundColor": "#2B2520",
-    "webhookUrl": "https://www.craycray.xyz/api/webhook",
-    "subtitle": "DevConnect Event Concierge",
-    "description": "Your personal event schedule powered by Rocky Agent. Get reminders for DevConnect sessions and never miss the talks you care about.",
-    "screenshotUrls": [
-      "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
-      "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png"
-    ],
-    "primaryCategory": "utility",
-    "tags": ["events", "schedule", "base", "agent"],
-    "heroImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png",
-    "tagline": "DevConnect Event Concierge",
-    "ogTitle": "Rocky Event Schedule",
-    "ogDescription": "Personal event schedule powered by Rocky Agent on Base.",
-    "ogImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760903454/rockysizesmall_yqpkig.png"
   }
 }
