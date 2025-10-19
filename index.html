@@ -128,13 +128,19 @@
                 this.reminders = [];
                 this.authToken = null;
                 this.isAuthenticated = false;
-                this.init();
+                // Initialize asynchronously - don't await in constructor
+                this.init().catch(error => {
+                    console.error('App initialization failed:', error);
+                });
             }
 
-            init() {
+            async init() {
                 this.setupEventListeners();
                 this.checkOnboarding();
-                this.initializeBaseConnection();
+                // Wait for the next tick to ensure DOM is fully rendered
+                await new Promise(resolve => setTimeout(resolve, 100));
+                // Wait for DOM to be fully ready before calling SDK ready
+                await this.initializeBaseConnection();
             }
 
             checkOnboarding() {
@@ -198,15 +204,13 @@
                         return;
                     }
 
-                    // Initialize Base Mini App SDK with timeout
-                    const readyPromise = sdk.actions.ready();
-                    const timeoutPromise = new Promise((_, reject) => 
-                        setTimeout(() => reject(new Error('SDK ready timeout')), 5000)
-                    );
+                    // Call sdk.actions.ready() once the app has loaded - following Base documentation pattern
+                    // Disable native gestures to prevent conflicts with swipe/drag interactions
+                    await sdk.actions.ready({ disableNativeGestures: true });
                     
-                    await Promise.race([readyPromise, timeoutPromise]);
+                    console.log('SDK actions ready - app is now connected to Base');
                     
-                    // Get user context from Base (available immediately)
+                    // Get user context from Base (available immediately after ready)
                     const context = sdk.context;
                     if (context?.user) {
                         // Set up basic user info from context
