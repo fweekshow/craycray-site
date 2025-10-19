@@ -152,8 +152,8 @@
                 console.log('SDK actions available:', sdk && sdk.actions ? 'Yes' : 'No');
                 
                 if (sdk && sdk.actions && typeof sdk.actions.ready === 'function') {
-                    console.log('🚀 Calling sdk.actions.ready({ disableNativeGestures: true })...');
-                    await sdk.actions.ready({ disableNativeGestures: true });
+                    console.log('🚀 Calling sdk.actions.ready() - following Base migration guide pattern...');
+                    await sdk.actions.ready();
                     console.log('✅ sdk.actions.ready() called successfully!');
                     return true;
                 } else {
