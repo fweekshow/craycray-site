@@ -155,10 +155,20 @@
                 
                 // Call ready() ONCE when app is ready to display
                 try {
-                    await sdk.actions.ready();
-                    await this.initializeBaseConnection();
+                    console.log('🔧 Attempting to call sdk.actions.ready()...');
+                    console.log('SDK available:', typeof sdk !== 'undefined');
+                    console.log('SDK actions available:', sdk && sdk.actions ? 'Yes' : 'No');
+                    
+                    if (sdk && sdk.actions && typeof sdk.actions.ready === 'function') {
+                        await sdk.actions.ready();
+                        console.log('✅ sdk.actions.ready() called successfully!');
+                        await this.initializeBaseConnection();
+                    } else {
+                        throw new Error('SDK or actions not available');
+                    }
                 } catch (error) {
-                    console.log('SDK initialization failed, using development mode');
+                    console.error('❌ SDK ready call failed:', error);
+                    console.log('Falling back to development mode');
                     this.setupDevMode();
                     this.updateConnectionStatus(false, 'Development Mode');
                 }
