@@ -586,9 +586,17 @@
                     };
 
                     // Use Base Mini App SDK compose functionality for sharing
-                    if (sdk && typeof sdk.actions.composeCast === 'function') {
-                        await sdk.actions.composeCast(shareData);
-                    } else if (navigator.share) {
+                    if (sdk && sdk.actions && typeof sdk.actions.composeCast === 'function') {
+                        try {
+                            await sdk.actions.composeCast(shareData);
+                            return; // Success, exit early
+                        } catch (sdkError) {
+                            console.error('SDK composeCast failed:', sdkError);
+                            // Fall through to fallback methods
+                        }
+                    }
+                    
+                    if (navigator.share) {
                         // Fallback to Web Share API if available
                         await navigator.share({
                             title: 'My DevConnect Schedule',
@@ -637,9 +645,17 @@
                         embeds: ['https://www.craycray.xyz/']
                     };
 
-                    if (sdk && typeof sdk.actions.composeCast === 'function') {
-                        await sdk.actions.composeCast(shareData);
-                    } else if (navigator.share) {
+                    if (sdk && sdk.actions && typeof sdk.actions.composeCast === 'function') {
+                        try {
+                            await sdk.actions.composeCast(shareData);
+                            return; // Success, exit early
+                        } catch (sdkError) {
+                            console.error('SDK composeCast failed:', sdkError);
+                            // Fall through to fallback methods
+                        }
+                    }
+                    
+                    if (navigator.share) {
                         await navigator.share({
                             title: reminder.title,
                             text: shareText,
