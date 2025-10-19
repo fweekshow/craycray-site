@@ -182,8 +182,29 @@
 
             async initializeBaseConnection() {
                 try {
-                    // Initialize Base Mini App SDK
-                    await sdk.actions.ready();
+                    // Check if we're in a mini-app context first
+                    if (typeof sdk === 'undefined' || !sdk) {
+                        console.log('SDK not available, using development mode');
+                        this.setupDevMode();
+                        this.updateConnectionStatus(false, 'Development Mode');
+                        return;
+                    }
+
+                    // Check if actions are available before calling ready()
+                    if (!sdk.actions || typeof sdk.actions.ready !== 'function') {
+                        console.log('SDK actions not ready, using development mode');
+                        this.setupDevMode();
+                        this.updateConnectionStatus(false, 'Development Mode');
+                        return;
+                    }
+
+                    // Initialize Base Mini App SDK with timeout
+                    const readyPromise = sdk.actions.ready();
+                    const timeoutPromise = new Promise((_, reject) => 
+                        setTimeout(() => reject(new Error('SDK ready timeout')), 5000)
+                    );
+                    
+                    await Promise.race([readyPromise, timeoutPromise]);
                     
                     // Get user context from Base (available immediately)
                     const context = sdk.context;
@@ -216,6 +237,11 @@
             async authenticateUser() {
                 try {
                     this.updateConnectionStatus(false, 'Signing in...');
+                    
+                    // Check if SDK and quickAuth are available
+                    if (typeof sdk === 'undefined' || !sdk.quickAuth || typeof sdk.quickAuth.getToken !== 'function') {
+                        throw new Error('Base Quick Auth not available');
+                    }
                     
                     // Use Base Quick Auth to get JWT token
                     const { token } = await sdk.quickAuth.getToken();
