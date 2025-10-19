@@ -1,0 +1,569 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #ffffff;
+    background: #2B2520;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* Header Section */
+.header {
+    text-align: center;
+    padding: 60px 20px;
+    color: white;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    border-bottom: 3px solid #D4AF37;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+}
+
+.header h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    opacity: 0.95;
+    font-weight: 300;
+}
+
+/* Section Styles */
+section {
+    background: #3A332E;
+    border-radius: 0;
+    padding: 50px 40px;
+    margin-bottom: 0;
+    border-bottom: 1px solid #4A433E;
+}
+
+section:hover {
+    background: #403933;
+}
+
+section h2 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* Video Section */
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    border: 2px solid #4A433E;
+}
+
+.video-container video {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #000;
+}
+
+/* PDF Section */
+.pdf-container {
+    position: relative;
+    width: 100%;
+    height: 800px;
+    border: 2px solid #4A433E;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.pdf-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.pdf-fallback {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background: #2B2520;
+    border-radius: 4px;
+    border: 1px solid #4A433E;
+}
+
+.pdf-fallback a {
+    color: #D4AF37;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.pdf-fallback a:hover {
+    color: #FFD700;
+    text-decoration: underline;
+}
+
+/* Navigation */
+.nav {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #D4AF37;
+    background: rgba(212, 175, 55, 0.1);
+}
+
+/* Mini App Specific Styles */
+.connection-section {
+    padding: 20px 40px;
+    background: #2B2520;
+    border-bottom: 1px solid #4A433E;
+}
+
+/* Onboarding Styles */
+.onboarding-section {
+    padding: 40px 20px;
+    background: #2B2520;
+    border-bottom: 1px solid #4A433E;
+}
+
+.onboarding-card {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.onboarding-header h2 {
+    color: #ffffff;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.onboarding-header p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+}
+
+.onboarding-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.feature h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.feature p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.onboarding-btn {
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+    color: #000;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.onboarding-btn:hover {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 20px;
+}
+
+.auth-section {
+    text-align: center;
+}
+
+.signin-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.signin-btn:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #666;
+    transition: background 0.3s ease;
+}
+
+.status-indicator.connected {
+    background: #4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+.status-indicator.disconnected {
+    background: #F44336;
+}
+
+.profile-section {
+    padding: 30px 40px;
+    background: #2B2520;
+}
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.profile-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D4AF37, #FFD700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background-size: cover;
+    background-position: center;
+}
+
+.profile-info h2 {
+    color: #ffffff;
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+}
+
+.user-fid {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.address {
+    color: rgba(255, 255, 255, 0.6);
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.schedule-section {
+    padding: 50px 40px;
+}
+
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.schedule-header h2 {
+    color: #ffffff;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.share-btn, .refresh-btn {
+    background: #D4AF37;
+    color: #000;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.share-btn {
+    background: #667eea;
+    color: white;
+}
+
+.share-btn:hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+}
+
+.refresh-btn:hover {
+    background: #FFD700;
+    transform: translateY(-2px);
+}
+
+.reminders-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(212, 175, 55, 0.3);
+    border-top: 3px solid #D4AF37;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.reminders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.reminder-item {
+    background: #3A332E;
+    border: 1px solid #4A433E;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+}
+
+.reminder-item:hover {
+    background: #403933;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.reminder-icon {
+    font-size: 2rem;
+    width: 60px;
+    text-align: center;
+}
+
+.reminder-content {
+    flex: 1;
+}
+
+.reminder-content h4 {
+    color: #ffffff;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+
+.reminder-content p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 12px;
+}
+
+.reminder-meta {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.reminder-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.reminder-time {
+    color: #D4AF37;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.reminder-status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.reminder-status.active {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+}
+
+.action-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.action-btn:hover {
+    background: #45a049;
+    transform: scale(1.1);
+}
+
+.share-reminder-btn {
+    background: #667eea !important;
+}
+
+.share-reminder-btn:hover {
+    background: #5a6fd8 !important;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    background: #1A1614;
+    border-top: 1px solid #4A433E;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+    }
+    
+    section {
+        padding: 25px;
+    }
+    
+    section h2 {
+        font-size: 1.6rem;
+    }
+    
+    .pdf-container {
+        height: 600px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .header {
+        padding: 40px 10px;
+    }
+    
+    section {
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .pdf-container {
+        height: 500px;
+    }
+}
+

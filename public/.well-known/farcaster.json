@@ -1,0 +1,38 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjQ5ODU0NCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDBGNTJDQjQzOTJEMkZFYjJhMEMxMjkwYTNlN0UyMUJjMjI0NTNBNzIifQ",
+    "payload": "eyJkb21haW4iOiJ3d3cuY3JheWNyYXkueHl6In0",
+    "signature": "dCh6562ZBLJN6KP2HUsiS8+U4U17/WmE2ALpG+XrycB6t2XHl+IuU/xoNBJiioc7i5Aegyj1+wswMjKZb/d6QBs="
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "Rocky - Event Schedule",
+    "homeUrl": "https://www.craycray.xyz/",
+    "iconUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760905818/ChatGPT_Image_Oct_19_2025_at_05_29_51_PM_aizk0e.png",
+    "splashImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/w_200,h_200,c_crop,f_png/v1760906596/Blocky_Rock_Character_with_Grin_eqxbgq.png",
+    "splashBackgroundColor": "#D4AF37",
+    "webhookUrl": "https://www.craycray.xyz/api/webhook",
+    "subtitle": "DevConnect Event Concierge",
+    "description": "Your personal event schedule powered by Rocky Agent. Get reminders for DevConnect sessions and never miss the talks you care about.",
+    "screenshotUrls": [
+      "https://res.cloudinary.com/dg5qvbxjp/image/upload/ar_3:2,c_crop,w_1200,h_800,f_png/v1760906596/Blocky_Rock_Character_with_Grin_eqxbgq.png",
+      "https://res.cloudinary.com/dg5qvbxjp/image/upload/v1760901252/ChatGPT_Image_Oct_19_2025_at_04_14_02_PM_hn9pfp.png"
+    ],
+    "primaryCategory": "social",
+    "tags": [
+      "events",
+      "schedule",
+      "base",
+      "agent"
+    ],
+    "heroImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/ar_3:2,c_crop,w_1200,h_800,f_png/v1760906596/Blocky_Rock_Character_with_Grin_eqxbgq.png",
+    "tagline": "Every event needs an Agent",
+    "ogTitle": "Rocky - DevConnect Concierge",
+    "ogDescription": "Get the latest updates on DevCon",
+    "ogImageUrl": "https://res.cloudinary.com/dg5qvbxjp/image/upload/ar_3:2,c_crop,w_1200,h_800,f_png/v1760906596/Blocky_Rock_Character_with_Grin_eqxbgq.png",
+    "noindex": true
+  },
+  "baseBuilder": {
+    "allowedAddresses": ["0x22209CFC1397832f32160239C902B10A624cAB1A"]
+  }
+}

@@ -1,24 +1,23 @@
 {
-  "name": "rocky-landing-page",
+  "name": "rocky-miniapp",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fweekshow/craycray-site.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/fweekshow/craycray-site/issues"
-  },
-  "homepage": "https://github.com/fweekshow/craycray-site#readme",
-  "description": "",
   "dependencies": {
     "@farcaster/miniapp-sdk": "^0.2.1",
-    "@farcaster/quick-auth": "^0.8.0"
+    "@farcaster/quick-auth": "^0.0.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
   }
 }
